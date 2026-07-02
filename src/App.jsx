@@ -12,6 +12,7 @@ import FAQAccordion from './FAQAccordion'
 import SalesChart from './SalesChart'
 import DebouncedSearch from './DebouncedSearch'
 import DocumentHeader from './DocumentHeader'
+import Providers from './Providers'
 
 export const GlobalContext = createContext();
 
@@ -79,6 +80,7 @@ function App() {
           <Link to="/stopwatch">Stopwatch</Link>
           <Link to="/faqAccordion">FAQAccordion</Link>
           <Link to="/sales">Sales</Link>
+          <Link to="/providers">Providers</Link>
           <Link to="/profile">Profile</Link>
         </nav>
 
@@ -95,6 +97,7 @@ function App() {
               <Route path="/stopwatch" element={<Stopwatch />} />
               <Route path="/faqAccordion" element={<FAQAccordion />} />
               <Route path="/sales" element={<SalesChart />} />
+              <Route path="/providers" element={<Providers />} />
               <Route path="/profile" element={<Profile />} />
             </Routes>
           </Suspense>

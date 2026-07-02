@@ -18,6 +18,17 @@ function PromoBanner(props) {
     getPokemonCards();
   }, []);
 
+// Batch state
+// function fetchUserData() {
+//   fetch('/api/user').then((res) => {
+//     // In React 18+, all three of these state updates are batched together.
+//     // The UI will only re-render ONCE at the end of this block.
+//     setIsLoading(false);
+//     setUserData(res.data);
+//     setError(null);
+//   });
+// }
+
   return (
     <>
       <h1>{props.name}</h1>
