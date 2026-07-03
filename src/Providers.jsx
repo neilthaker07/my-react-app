@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useDeferredValue, useMemo} from 'react';
 
 function Providers() {
     const [providerData, setProviderData] = useState(null);
@@ -28,18 +28,29 @@ function Providers() {
             });
     }, []);
 
-    const filteredProvider = providerData?.filter(provider => {
-        if (!searchQuery) return true;
-        return provider.name.toLowerCase().includes(searchQuery.toLowerCase())
-    });
+    // Defer rendering to the browser when it has free memory for re-rendering.
+    // Main thread stays free and UI never freezes.
+    // Used when Data is already in the UI and filter on the data
+    const deferredSearchQuery = useDeferredValue(searchQuery);
+
+    // same search query then return memoized results (No re-calculation needed for same filter)
+    // Only for subsequent similar search queries.
+    const filteredProviders = useMemo(() => {
+        if (!providerData) return null;
+        if (!deferredSearchQuery) return providerData;
+
+        return providerData.filter(provider => 
+            provider.name.toLowerCase().includes(deferredSearchQuery.toLowerCase())
+        );
+    }, [providerData, deferredSearchQuery]);
 
     return (
         <>
-            <input type="text" placeholder="Search providers..." onChange={(e) => setSearchQuery(e.target.value)} />
+            <input type="text" value={searchQuery} placeholder="Search providers..." onChange={(e) => setSearchQuery(e.target.value)} />
             <div>
                 <h1>Providers</h1>
-                {filteredProvider && filteredProvider.map(provider => 
-                    <div>
+                {filteredProviders && filteredProviders.map(provider => 
+                    <div key={provider.id} style={{color: 'red'}}>
                         <p>{provider.id}</p>
                         <p>{provider.name}</p>
                     </div>

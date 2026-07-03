@@ -45,8 +45,11 @@ export default function DebouncedSearch() {
           `Advanced ${debouncedQuery} concepts`
         ]);
         setIsSearching(false);
-      }, 800);
+      }, 100); // fake timeout of 100ms to simulate API call
 
+      // In the real API call, there is AbortController signal to cancel API call.
+      // In case API call is in flight and user types again, we can cancel the previous API call
+      // React compares old and new debouncedQuery and if they are different, it will cancel the previous call.
       return () => clearTimeout(fakeApiRequest);
       
     } else {
@@ -82,7 +85,7 @@ export default function DebouncedSearch() {
         <ul style={{ background: '#f9f9f9', border: '1px solid #eee', padding: '10px', marginTop: '10px', listStyle: 'none' }}>
           {results.map((result, index) => (
             <li key={index} style={{ padding: '8px 0', borderBottom: '1px solid #ddd' }}>
-              🔍 {result}
+              {result}
             </li>
           ))}
         </ul>
